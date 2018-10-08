@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarvalSoftware.Servers.CustomAction.Example", "MarvalSoftware.Servers.CustomAction.Example\MarvalSoftware.Servers.CustomAction.Example.csproj", "{E38C1B78-6D4B-474C-A3B9-B159C86DD3CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarvalSoftware.Servers.CustomAction.PostJSON", "MarvalSoftware.Servers.CustomAction.PostJSON\MarvalSoftware.Servers.CustomAction.PostJSON.csproj", "{C015341D-6D2A-4F03-A4BB-1E9851BEE9F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E38C1B78-6D4B-474C-A3B9-B159C86DD3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E38C1B78-6D4B-474C-A3B9-B159C86DD3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E38C1B78-6D4B-474C-A3B9-B159C86DD3CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C015341D-6D2A-4F03-A4BB-1E9851BEE9F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C015341D-6D2A-4F03-A4BB-1E9851BEE9F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C015341D-6D2A-4F03-A4BB-1E9851BEE9F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C015341D-6D2A-4F03-A4BB-1E9851BEE9F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
