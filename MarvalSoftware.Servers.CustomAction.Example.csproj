@@ -38,11 +38,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MarvalSoftware, Version=12.12.0.3026, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="MarvalSoftware, Version=14.10.4.8315, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binary References\MarvalSoftware.dll</HintPath>
     </Reference>
-    <Reference Include="MarvalSoftware.Servers, Version=12.12.0.3026, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="MarvalSoftware.Servers, Version=14.10.4.8315, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binary References\MarvalSoftware.Servers.dll</HintPath>
     </Reference>
