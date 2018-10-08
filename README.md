@@ -52,8 +52,10 @@ action message in the correct format to send over to the Custom Action.
 
 ## Contributing
 
-We welcome all feedback including feature requests and bug reports. Please raise these as issues on BitBucket.
-If you would like to contribute to the project please fork the repository and issue a pull request.
+We welcome all feedback including feature requests and bug reports.
+Please raise these as issues on [GitHub](https://github.com/MarvalBenelux/GenericCustomActions).
+If you would like to contribute to the project please fork the
+repository and issue a pull request.
 
 
 ## Advanced setups
