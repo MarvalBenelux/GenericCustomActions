@@ -93,7 +93,7 @@ namespace MarvalSoftware.Servers.CustomAction.ExecuteAgent
         /// <summary>
         /// Public event for sending a message through to the UI
         /// </summary>
-        public event EventHandler<MessageEventArgs> SendMessage = delegate { };
+        public event EventHandler<MessageEventArgs> SendMessage;
 
         #endregion
 
