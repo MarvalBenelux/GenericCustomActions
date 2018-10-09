@@ -1,8 +1,8 @@
 ﻿using System;
 using MarvalSoftware.Data;
+using MarvalSoftware.Diagnostics;
 using MarvalSoftware.ExceptionHandling;
 using MarvalSoftware.Extensions;
-using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
@@ -18,15 +18,7 @@ namespace MarvalSoftware.Servers.CustomAction.PostForm
         #region Implementation of IIntegrationAction
 
         /// <summary>
-        /// Providing a name for a custom action is Required
-        /// </summary>
-        public PostFormAction()
-        {
-            this.ActionName = "PostForm";
-        }
-
-        /// <summary>
-        /// The integration action name
+        /// The integration action name (is being set by the configuration in the MSM Module Loader)
         /// </summary>
         public string ActionName { get; set; }
 
@@ -54,7 +46,7 @@ namespace MarvalSoftware.Servers.CustomAction.PostForm
                 }
                 var result = formPost.Result;
                 var debugInfo = new MarvalApplicationException(String.Format("Success: {0} ({1}) - {2}", (int)result.StatusCode, result.StatusCode, result.ReasonPhrase));
-                Log.Debug(debugInfo, String.Format("{0}: {1}: {2}", this.ActionName, postIntegration, debugInfo.Message));
+                TraceHelper.Verbose(String.Format("{0}: {1}: {2}", this.ActionName, postIntegration, debugInfo.Message));
 #if DEBUG
                 // send a message to the UI
                 SendMessage(this, new MessageEventArgs(sessionId, new TrayMessage
@@ -67,12 +59,12 @@ namespace MarvalSoftware.Servers.CustomAction.PostForm
             }
             catch (HttpRequestException e)
             {
-                Log.Error(e, String.Format("{0}: {1}: {2}", this.ActionName, postIntegration, e.Message));
+                TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, postIntegration, e.Message));
                 ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Unable to connect with {2}", this.ActionName, postIntegration, postBaseAddress ?? "<unset>"), e));
             }
             catch (Exception e)
             {
-                Log.Error(e, String.Format("{0}: {1}: {2}", this.ActionName, postIntegration, (e.InnerException ?? e).Message));
+                TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, postIntegration, (e.InnerException ?? e).Message));
                 if ((e is AggregateException) && (e.InnerException != null))
                 {
                     ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Error while communicating with {2}", this.ActionName, postIntegration, postBaseAddress ?? "<unset>"), e.InnerException));

@@ -1,8 +1,8 @@
 ﻿using System;
 using MarvalSoftware.Data;
+using MarvalSoftware.Diagnostics;
 using MarvalSoftware.ExceptionHandling;
 using MarvalSoftware.Extensions;
-using Serilog;
 
 namespace MarvalSoftware.Servers.CustomAction.Example
 {
@@ -11,15 +11,7 @@ namespace MarvalSoftware.Servers.CustomAction.Example
         #region Implementation of IIntegrationAction
 
         /// <summary>
-        /// Providing a name for your custom action is Required
-        /// </summary>
-        public SampleAction()
-        {
-            this.ActionName = "SampleAction";
-        }
-
-        /// <summary>
-        /// The integration action name
+        /// The integration action name (is being set by the configuration in the MSM Module Loader)
         /// </summary>
         public string ActionName { get; set; }
 
@@ -47,7 +39,7 @@ namespace MarvalSoftware.Servers.CustomAction.Example
             }
             catch (Exception ex)
             {
-                Log.Error(ex, this.ActionName);
+                TraceHelper.Error(string.Format("[{0}] {1}", this.ActionName, ex.GetFormattedException()));
                 ExceptionHandler.Publish(new Exception(string.Format("[{0}] {1}", this.ActionName, ex.Message)));
             }
         }

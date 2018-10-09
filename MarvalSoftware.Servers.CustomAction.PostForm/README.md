@@ -3,10 +3,16 @@
 
 ## Dependencies
 
-Make sure that the following assemblies are copied into `msmd`'s folder,
-besides `CustomActionPostForm.dll` itself:
+Make sure that the following assemblies / dependencies are copied into
+the `Services\Integration` folder:
 
 **N/A**
+
+
+## Example of `Actions` config to add
+
+     <add ActionName="PostForm" ActionType="MarvalSoftware.Servers.CustomAction.PostForm.PostFormAction"
+           ActionPath="C:\Program Files\Marval Software\MSM\Services\Integration\CustomActionPostForm.dll" />
 
 
 ## Example Action Message:

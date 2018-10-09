@@ -1,13 +1,13 @@
 ﻿using System;
 using MarvalSoftware.Data;
+using MarvalSoftware.Diagnostics;
 using MarvalSoftware.ExceptionHandling;
-using Serilog;
+using MarvalSoftware.Extensions;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using MarvalSoftware.Extensions;
 
 namespace MarvalSoftware.Servers.CustomAction.ExecuteAgent
 {
@@ -16,15 +16,7 @@ namespace MarvalSoftware.Servers.CustomAction.ExecuteAgent
         #region Implementation of IIntegrationAction
 
         /// <summary>
-        /// Providing a name for your custom action is Required
-        /// </summary>
-        public ExecuteAgentAction()
-        {
-            this.ActionName = "ExecuteAgent";
-        }
-
-        /// <summary>
-        /// The integration action name
+        /// The integration action name (is being set by the configuration in the MSM Module Loader)
         /// </summary>
         public string ActionName { get; set; }
 
@@ -50,11 +42,11 @@ namespace MarvalSoftware.Servers.CustomAction.ExecuteAgent
                     {
                         Heading = agentIntegration,
                         Text = String.Format("Agent executable not found: {0}", agentFullPath),
-                        Type = TrayMessage.MessageTypes.Warning
+                        Type = TrayMessage.MessageTypes.Alert
                     }));
 #endif
                     var logException = new MarvalApplicationException(String.Format(" Agent executable not found: {0} ", agentFullPath));
-                    Log.Error(logException, String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, logException.Message));
+                    TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, logException.Message));
                     return;
                 }
                 var agentExecution = ExecuteAgent(agentFullPath, executeAgentMessage.Parameters.Select(p => p.Value).ToArray());
@@ -65,7 +57,7 @@ namespace MarvalSoftware.Servers.CustomAction.ExecuteAgent
                 }
                 var result = agentExecution.Result;
                 var debugInfo = new MarvalApplicationException(String.Format("Success: {0} ", result));
-                Log.Debug(debugInfo, String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, debugInfo.Message));
+                TraceHelper.Verbose(String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, debugInfo.Message));
 #if DEBUG
                 // send a message to the UI
                 SendMessage(this, new MessageEventArgs(sessionId, new TrayMessage
@@ -78,7 +70,7 @@ namespace MarvalSoftware.Servers.CustomAction.ExecuteAgent
             }
             catch (Exception e)
             {
-                Log.Error(e, String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, (e.InnerException ?? e).Message));
+                TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, (e.InnerException ?? e).Message));
                 if ((e is AggregateException) && (e.InnerException != null))
                 {
                     ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Error while executing {2}", this.ActionName, agentIntegration, agentFullPath ?? "<unset>"), e.InnerException));

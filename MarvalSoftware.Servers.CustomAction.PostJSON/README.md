@@ -3,10 +3,16 @@
 
 ## Dependencies
 
-Make sure that the following assemblies are copied into `msmd`'s folder,
-besides `CustomActionPostJSON.dll` itself:
+Make sure that the following assemblies / dependencies are copied into
+the `Services\Integration` folder:
 
 - System.Net.Http.Formatting.dll
+
+
+## Example of `Actions` config to add
+
+     <add ActionName="PostJSON" ActionType="MarvalSoftware.Servers.CustomAction.PostJSON.PostJsonAction"
+           ActionPath="C:\Program Files\Marval Software\MSM\Services\Integration\CustomActionPostJSON.dll" />
 
 
 ## Example Action Message:

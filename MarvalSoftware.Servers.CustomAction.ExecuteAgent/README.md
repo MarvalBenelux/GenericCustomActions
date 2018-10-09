@@ -3,10 +3,16 @@
 
 ## Dependencies
 
-Make sure that the following assemblies are copied into `msmd`'s folder,
-besides `CustomActionPostJSON.dll` itself:
+Make sure that the following assemblies / dependencies are copied into
+the `Services\Integration` folder:
 
 **N/A**
+
+
+## Example of `Actions` config to add
+
+     <add ActionName="ExecuteAgent" ActionType="MarvalSoftware.Servers.CustomAction.ExecuteAgent.ExecuteAgentAction"
+           ActionPath="C:\Program Files\Marval Software\MSM\Services\Integration\CustomActionExecuteAgent.dll" />
 
 
 ## Example Action Message:

@@ -1,5 +1,6 @@
 # Generic CustomActions for MSM
 
+**NOTE: This is a historic support version for older versions of MSM (v14.0 - 14.3 in this case)**
 
 ## Building
 
@@ -11,39 +12,59 @@ been placed in `Binary References`.
 
 ## Installation
 
-Any CustomAction can be installed by simply placing its assembly and
-any other assemblies it depends on into the `Services` folder (in the 
-`MSM` installation folder) where the MSM Background service 
-(`msmd.exe`) can be found. The `readme.md` files of the respective
+### Installing files
+Any CustomAction can be installed by simply placing its assembly in the
+Integration module's folder (i.e. `Services\Integration` in the `MSM`
+installation folder).
+Any other assemblies it depends on should be place one level up,
+into the `Services` folder where the MSM Module Loader service
+can find and load them. The `readme.md` files of the respective
 CustomActions describe which dependencies are needed for it to work.
+
+### Amend configuration files
+In MSM versions pre-14.4, all custom actions need to be registered with
+the Integration module. This can be done in the Integration module's config file
+(`Services\Integration\MSM Integration.dll.config`).
+A new action should be added in the `Actions` section under the `ActionSettings`
+section. The definitive name for the action is being decided on here as well,
+in the `ActionName` attribute.
+Please double check both `ActionType` (which should match the full class name,
+including prefixed namespace) and `ActionPath`. The section should resemble
+something like:
+
+	  <ActionSettings>
+		<Actions>
+		 <add ActionName="PostJSON" ActionType="MarvalSoftware.Servers.CustomAction.PostJSON.PostJsonAction" 
+			   ActionPath="C:\Program Files\Marval Software\MSM\Services\Integration\CustomActionPostJSON.dll" /> 
+		</Actions>
+	  </ActionSettings>
 
 
 ## Usage
 
 In MSM's `Request Actions`, use **Execute Custom Action** in the 
-Then-actions and manually write the Custom Action name (like 
-SampleAction, PostJSON, etc.) in the next field. Now, also select an
+Then-actions and manually write the Custom Action name (as specified
+in `ActionName` in the config) in the next field. Now, also select an
 action message in the correct format to send over to the Custom Action.
 
 ## Currently included generic CustomActions:
 
 - [SampleAction](MarvalSoftware.Servers.CustomAction.Example/)
   The example as distributed by Marval Software Ltd. This is the 
-  version as distributed with v14.4 up to at least v14.10 and probably 
-  much higher.
+  version as distributed with v14.3.
 
 - [PostJSON](MarvalSoftware.Servers.CustomAction.PostJSON/)
-  A generic CustomAction for the MSM Background Service that can POST 
+  A generic CustomAction for the MSM Module Loader that can POST 
   JSON to any HTTP(S) REST endpoint. Proxy authentication is supported.
   Action Messages are expected to be in the JSON format themselves.
 
 - [PostForm](MarvalSoftware.Servers.CustomAction.PostForm/)
-  A generic CustomAction for the MSM Background Service that can POST 
+  A generic CustomAction for the MSM Module Loader that can POST 
   `x-form-urlencoded` data via HTTP(S) to any website / web application.
   Action Messages are expected to be in XML format.
 
 - [ExecuteAgent](MarvalSoftware.Servers.CustomAction.ExecuteAgent/)
-  A generic CustomAction for the MSM Background Service that can 
+  A generic CustomAction for the MSM Module Loader that can 
   execute executables, batch scripts, Powershell scripts, etc.
   It runs these 'agents' on the server itself and parameters / 
   arguments can be passed in.
