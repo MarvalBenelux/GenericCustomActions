@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -71,7 +72,7 @@
     GOTO EXIT
 )
 
-MKDIR "$(SolutionDir)Binary References" 2> NUL
+MKDIR "$(SolutionDir)Binary References" 2&gt; NUL
 COPY /Y  "$(SolutionDir)MarvalSoftware\bin\$(ConfigurationName)\MarvalSoftware.dll" "$(SolutionDir)Binary References\"
 COPY /Y  "$(SolutionDir)MarvalSoftware.Servers\bin\$(ConfigurationName)\MarvalSoftware.Servers.dll" "$(SolutionDir)Binary References\"
 :EXIT</PreBuildEvent>
