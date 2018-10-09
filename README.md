@@ -1,6 +1,6 @@
 # Generic CustomActions for MSM
 
-**NOTE: This is a historic support version for older versions of MSM (v14.0 - 14.3 in this case)**
+**NOTE: This is a historic support version for older versions of MSM (v12 in this case)**
 
 ## Building
 
@@ -51,7 +51,7 @@ action message in the correct format to send over to the Custom Action.
 
 - [SampleAction](MarvalSoftware.Servers.CustomAction.Example/)
   The example as distributed by Marval Software Ltd. This is the 
-  version as distributed with v14.3.
+  version as distributed with v12.12.0.
 
 - [PostJSON](MarvalSoftware.Servers.CustomAction.PostJSON/)
   A generic CustomAction for the MSM Module Loader that can POST 

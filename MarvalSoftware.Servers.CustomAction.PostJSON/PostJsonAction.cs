@@ -1,8 +1,6 @@
 ﻿using System;
-using MarvalSoftware.Data;
 using MarvalSoftware.Diagnostics;
-using MarvalSoftware.ExceptionHandling;
-using MarvalSoftware.Extensions;
+using MarvalSoftware.UI.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -54,34 +52,31 @@ namespace MarvalSoftware.Servers.CustomAction.PostJSON
                 TraceHelper.Verbose(String.Format("{0}: {1}: {2}", this.ActionName, jsonIntegration, debugInfo.Message));
 #if DEBUG
                 // send a message to the UI
-                SendMessage(this, new MessageEventArgs(sessionId, new TrayMessage
+                SendMessage(this, new MessageEventArgs(sessionId, new Message
                     {
                         Heading = jsonIntegration,
                         Text = "Successful postback",
-                        Type = TrayMessage.MessageTypes.Information
+                        Type = Message.MessageTypes.Information
                     }));
 #endif
             }
             catch (JsonReaderException e)
             {
-                TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, jsonIntegration, e.Message));
-                ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Error while parsing Action Message", this.ActionName, jsonIntegration), e));
+                throw new MarvalApplicationException(String.Format("[{0}] {1}: Error while parsing Action Message", this.ActionName, jsonIntegration), e);
             }
             catch (HttpRequestException e)
             {
-                TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, jsonIntegration, e.Message));
-                ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Unable to connect with {2}", this.ActionName, jsonIntegration, jsonBaseAddress ?? "<unset>"), e));
+                throw new MarvalApplicationException(String.Format("[{0}] {1}: Unable to connect with {2}", this.ActionName, jsonIntegration, jsonBaseAddress ?? "<unset>"), e);
             }
             catch (Exception e)
             {
-                TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, jsonIntegration, (e.InnerException ?? e).Message));
                 if ((e is AggregateException) && (e.InnerException != null))
                 {
-                    ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Error while communicating with {2}", this.ActionName, jsonIntegration, jsonBaseAddress ?? "<unset>"), e.InnerException));
+                    throw new MarvalApplicationException(String.Format("[{0}] {1}: Error while communicating with {2}", this.ActionName, jsonIntegration, jsonBaseAddress ?? "<unset>"), e.InnerException);
                 }
                 else
                 {
-                    ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Exception in JSON Integration", this.ActionName, jsonIntegration), e));
+                    throw new MarvalApplicationException(String.Format("[{0}] {1}: Exception in JSON Integration", this.ActionName, jsonIntegration), e);
                 }
             }
         }

@@ -1,8 +1,8 @@
 ﻿using System;
-using MarvalSoftware.Data;
 using MarvalSoftware.Diagnostics;
 using MarvalSoftware.ExceptionHandling;
 using MarvalSoftware.Extensions;
+using MarvalSoftware.UI.Web;
 
 namespace MarvalSoftware.Servers.CustomAction.Example
 {
@@ -29,11 +29,11 @@ namespace MarvalSoftware.Servers.CustomAction.Example
                 if (myMessageClass != null)
                 {
                     // this sample custom action does nothing more than send a message to the UI
-                    SendMessage(this, new MessageEventArgs(sessionId, new TrayMessage
+                    SendMessage(this, new MessageEventArgs(sessionId, new Message
                     {
                         Heading = Resource.ResourceManager[this.ActionName],
                         Text = string.Format("The sample action executed with action message {0}", myMessageClass.MyMessage),
-                        Type = TrayMessage.MessageTypes.Information
+                        Type = Message.MessageTypes.Information
                     }));
                 }
             }

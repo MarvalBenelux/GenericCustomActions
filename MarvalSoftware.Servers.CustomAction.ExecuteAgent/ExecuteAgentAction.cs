@@ -1,8 +1,7 @@
 ﻿using System;
-using MarvalSoftware.Data;
 using MarvalSoftware.Diagnostics;
-using MarvalSoftware.ExceptionHandling;
 using MarvalSoftware.Extensions;
+using MarvalSoftware.UI.Web;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -38,16 +37,15 @@ namespace MarvalSoftware.Servers.CustomAction.ExecuteAgent
                 {
 #if DEBUG
                     // send a message to the UI
-                    SendMessage(this, new MessageEventArgs(sessionId, new TrayMessage
+                    SendMessage(this, new MessageEventArgs(sessionId, new Message
                     {
                         Heading = agentIntegration,
                         Text = String.Format("Agent executable not found: {0}", agentFullPath),
-                        Type = TrayMessage.MessageTypes.Alert
+                        Type = Message.MessageTypes.Alert
                     }));
 #endif
                     var logException = new MarvalApplicationException(String.Format(" Agent executable not found: {0} ", agentFullPath));
-                    TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, logException.Message));
-                    return;
+                    throw new MarvalApplicationException(String.Format("[{0}] {1}: {2}", this.ActionName, agentIntegration, logException.Message));
                 }
                 var agentExecution = ExecuteAgent(agentFullPath, executeAgentMessage.Parameters.Select(p => p.Value).ToArray());
                 agentExecution.Wait(10000);
@@ -60,24 +58,23 @@ namespace MarvalSoftware.Servers.CustomAction.ExecuteAgent
                 TraceHelper.Verbose(String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, debugInfo.Message));
 #if DEBUG
                 // send a message to the UI
-                SendMessage(this, new MessageEventArgs(sessionId, new TrayMessage
+                SendMessage(this, new MessageEventArgs(sessionId, new Message
                 {
                     Heading = agentIntegration,
                     Text = "Successful agent execution",
-                    Type = TrayMessage.MessageTypes.Information
+                    Type = Message.MessageTypes.Information
                 }));
 #endif
             }
             catch (Exception e)
             {
-                TraceHelper.Error(String.Format("{0}: {1}: {2}", this.ActionName, agentIntegration, (e.InnerException ?? e).Message));
                 if ((e is AggregateException) && (e.InnerException != null))
                 {
-                    ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Error while executing {2}", this.ActionName, agentIntegration, agentFullPath ?? "<unset>"), e.InnerException));
+                    throw new MarvalApplicationException(String.Format("[{0}] {1}: Error while executing {2}", this.ActionName, agentIntegration, agentFullPath ?? "<unset>"), e.InnerException);
                 }
                 else
                 {
-                    ExceptionHandler.Publish(new MarvalApplicationException(String.Format("[{0}] {1}: Exception in agent integration", this.ActionName, agentIntegration), e));
+                    throw new MarvalApplicationException(String.Format("[{0}] {1}: Exception in agent Integration", this.ActionName, agentIntegration), e);
                 }
             }
         }
